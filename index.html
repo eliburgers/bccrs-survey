@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BCCRS Membership Survey</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
+:root{--red:#C0392B;--red-dark:#962d22;--red-light:#f9edec;--ink:#1a1a1a;--mid:#666;--light:#f7f5f2;--border:#ddd8d0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--light);color:var(--ink);min-height:100vh}
+.header{background:var(--red);color:#fff;padding:36px 40px 30px;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border:40px solid rgba(255,255,255,.07);border-radius:50%}
+.header::after{content:'';position:absolute;bottom:-40px;left:32%;width:140px;height:140px;border:25px solid rgba(255,255,255,.05);border-radius:50%}
+.header-badge{font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;opacity:.7;margin-bottom:8px}
+.header h1{font-family:'DM Serif Display',serif;font-size:2rem;font-weight:400;line-height:1.15;margin-bottom:12px}
+.header p{font-size:13.5px;opacity:.88;max-width:620px;line-height:1.7}
+.container{max-width:760px;margin:0 auto;padding:36px 24px 64px}
+.section-label{font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:6px;margin-top:36px}
+.section-title{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.q-block{background:#fff;border:1px solid var(--border);border-radius:6px;padding:22px 24px;margin-bottom:14px}
+.q-label{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:4px;line-height:1.5}
+.req{color:var(--red);margin-left:2px}
+.q-sub{font-size:12px;color:var(--mid);margin-bottom:14px;margin-top:2px}
+.likert-wrap{margin-top:12px}
+.likert-anchors{display:flex;justify-content:space-between;font-size:11px;color:var(--mid);margin-bottom:6px;font-weight:500}
+.likert-row{display:flex;gap:7px}
+.lbtn{flex:1;height:38px;border:1.5px solid var(--border);background:#fff;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;color:var(--mid);transition:all .15s;font-family:'DM Sans',sans-serif}
+.lbtn:hover{border-color:var(--red);color:var(--red)}
+.lbtn.selected{background:var(--red);border-color:var(--red);color:#fff}
+.opts{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;border:1.5px solid var(--border);border-radius:5px;cursor:pointer;font-size:13.5px;line-height:1.4;transition:all .15s}
+.opt:hover{border-color:var(--red);background:var(--red-light)}
+.opt.selected{border-color:var(--red);background:var(--red-light)}
+.opt input{margin-top:2px;accent-color:var(--red);flex-shrink:0}
+.matrix-wrap{margin-top:12px;overflow-x:auto}
+.mtbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.mtbl th{text-align:center;font-weight:600;padding:8px 4px;color:var(--mid);font-size:11px;border-bottom:2px solid var(--border)}
+.mtbl th:first-child{text-align:left;width:45%}
+.mtbl td{padding:9px 4px;text-align:center;border-bottom:1px solid #eee}
+.mtbl td:first-child{text-align:left;padding-left:0;font-size:13px;line-height:1.35}
+.mtbl tr:hover td{background:var(--red-light)}
+.mradio{width:18px;height:18px;accent-color:var(--red);cursor:pointer}
+textarea,input[type=email]{width:100%;border:1.5px solid var(--border);border-radius:5px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--ink);margin-top:10px;transition:border-color .15s;background:#fff}
+textarea{resize:vertical;min-height:80px}
+textarea:focus,input[type=email]:focus{outline:none;border-color:var(--red)}
+.submit-bar{margin-top:28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.btn{background:var(--red);color:#fff;border:none;padding:14px 32px;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s}
+.btn:hover{background:var(--red-dark)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.submit-note{font-size:12px;color:var(--mid)}
+.msg{border-radius:6px;padding:16px 20px;font-size:13.5px;margin-top:14px;display:none}
+.msg.success{background:#eaf7ea;border:1.5px solid #4caf50;color:#2e7d32;font-weight:500}
+.msg.error{background:#fff3f3;border:1.5px solid var(--red);color:var(--red)}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-badge">BCCRS Retention Committee</div>
+  <h1>Membership Survey</h1>
+  <p>This survey is intended to provide an overall assessment how BCCRS is meeting the social, educational and self-actualization needs of our volunteer members. It is anonymous by design. You have to be signed into your squad email to file a response but your email address will not be collected. You will, however, have the option of entering it, especially if you wish to be contacted by a member of the retention committee. Survey results will be shared with the membership when the survey is closed.</p>
+</div>
+
+<div class="container">
+
+  <div class="section-label">Section 1 of 6</div>
+  <div class="section-title">Identity &amp; Belonging</div>
+
+  <div class="q-block">
+    <div class="q-label">1. The squad is an important part of my identity.<span class="req">*</span></div>
+    <div class="likert-wrap">
+      <div class="likert-anchors"><span>Not at all</span><span>Completely</span></div>
+      <div class="likert-row" id="q1"></div>
+    </div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">2. I feel socially connected to the members on my night crew.<span class="req">*</span></div>
+    <div class="likert-wrap">
+      <div class="likert-anchors"><span>Not at all</span><span>Very much so</span></div>
+      <div class="likert-row" id="q2"></div>
+    </div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">3. I feel seen and heard by squad leadership.<span class="req">*</span></div>
+    <div class="likert-wrap">
+      <div class="likert-anchors"><span>Never</span><span>Always</span></div>
+      <div class="likert-row" id="q3"></div>
+    </div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">4. I feel supported in my professional development by my night crew officer(s).<span class="req">*</span></div>
+    <div class="likert-wrap">
+      <div class="likert-anchors"><span>Never</span><span>Always</span></div>
+      <div class="likert-row" id="q4"></div>
+    </div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">5. I feel comfortable bringing a grievance to my night crew officer(s).<span class="req">*</span></div>
+    <div class="likert-wrap">
+      <div class="likert-anchors"><span>Never</span><span>Always</span></div>
+      <div class="likert-row" id="q5"></div>
+    </div>
+  </div>
+
+  <div class="section-label">Section 2 of 6</div>
+  <div class="section-title">Engagement &amp; Retention</div>
+
+  <div class="q-block">
+    <div class="q-label">6. When I am away from the squad, I look forward to my next duty.<span class="req">*</span></div>
+    <div class="likert-wrap">
+      <div class="likert-anchors"><span>Never</span><span>Always</span></div>
+      <div class="likert-row" id="q6"></div>
+    </div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">7. In the past 12 months, I have seriously considered leaving the squad.<span class="req">*</span></div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q7" value="Never"> Never</label>
+      <label class="opt"><input type="radio" name="q7" value="Once or twice"> Once or twice</label>
+      <label class="opt"><input type="radio" name="q7" value="Several times"> Several times</label>
+      <label class="opt"><input type="radio" name="q7" value="Frequently"> Frequently</label>
+    </div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">8. I expect to still be actively riding in 5 years.<span class="req">*</span></div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q8" value="Definitely not"> Definitely not</label>
+      <label class="opt"><input type="radio" name="q8" value="Probably not"> Probably not</label>
+      <label class="opt"><input type="radio" name="q8" value="Unsure"> Unsure</label>
+      <label class="opt"><input type="radio" name="q8" value="Probably yes"> Probably yes</label>
+      <label class="opt"><input type="radio" name="q8" value="Definitely yes"> Definitely yes</label>
+    </div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">9. The squad's current staffing situation is a serious threat to the organization's future.<span class="req">*</span></div>
+    <div class="likert-wrap">
+      <div class="likert-anchors"><span>Strongly disagree</span><span>Strongly agree</span></div>
+      <div class="likert-row" id="q9"></div>
+    </div>
+  </div>
+
+  <div class="section-label">Section 3 of 6</div>
+  <div class="section-title">Barriers &amp; Motivators</div>
+
+  <div class="q-block">
+    <div class="q-label">10. The main barriers to me riding extra are.<span class="req">*</span></div>
+    <div class="q-sub">Check all that apply.</div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="q10" value="Work schedule"> Work schedule</label>
+      <label class="opt"><input type="checkbox" name="q10" value="Family commitments"> Family commitments</label>
+      <label class="opt"><input type="checkbox" name="q10" value="Distance from station"> Distance from station</label>
+      <label class="opt"><input type="checkbox" name="q10" value="Sleep / fatigue"> Sleep / fatigue</label>
+      <label class="opt"><input type="checkbox" name="q10" value="Lack of social connection at the station"> Lack of social connection at the station</label>
+      <label class="opt"><input type="checkbox" name="q10" value="Interpersonal culture issues"> Interpersonal culture issues</label>
+      <label class="opt"><input type="checkbox" name="q10" value="Feeling undertrained or out of practice"> Feeling undertrained or out of practice</label>
+      <label class="opt"><input type="checkbox" name="q10" value="No sense that extra riding makes a difference"> No sense that extra riding makes a difference</label>
+      <label class="opt"><input type="checkbox" name="q10" value="I already ride extra as much as I can"> I already ride extra as much as I can</label>
+      <label class="opt"><input type="checkbox" name="q10" value="Other"> Other (elaborate in open field below)</label>
+    </div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">11. What would most increase your likelihood of riding extra?<span class="req">*</span></div>
+    <div class="q-sub">Check up to 3.</div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="q11" value="More social events / better crew culture"> More social events / better crew culture</label>
+      <label class="opt"><input type="checkbox" name="q11" value="Greater flexibility in duty scheduling"> Greater flexibility in duty scheduling</label>
+      <label class="opt"><input type="checkbox" name="q11" value="Better facilities"> Better facilities</label>
+      <label class="opt"><input type="checkbox" name="q11" value="Clearer advancement pathway"> Clearer advancement pathway</label>
+      <label class="opt"><input type="checkbox" name="q11" value="Stronger sense that leadership has a plan"> Stronger sense that leadership has a plan</label>
+      <label class="opt"><input type="checkbox" name="q11" value="More stable station assignment (less bouncing between 7, 26, R1)"> More stable station assignment (less bouncing between 7, 26, R1)</label>
+      <label class="opt"><input type="checkbox" name="q11" value="Financial incentives or free meals"> Financial incentives or free meals</label>
+      <label class="opt"><input type="checkbox" name="q11" value="Knowing my crew needs me specifically"> Knowing my crew needs me specifically</label>
+      <label class="opt"><input type="checkbox" name="q11" value="Nothing, I already ride as much as I can"> Nothing, I already ride as much as I can</label>
+      <label class="opt"><input type="checkbox" name="q11" value="Other"> Other (elaborate in open field below)</label>
+    </div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">12. Rate the severity of each issue at the squad right now.<span class="req">*</span></div>
+    <div class="q-sub">1 = Not a problem &nbsp;&nbsp; 5 = Serious problem</div>
+    <div class="matrix-wrap">
+      <table class="mtbl">
+        <thead><tr><th>Issue</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
+        <tbody id="q12-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-label">Section 4 of 6</div>
+  <div class="section-title">Flexibility &amp; Policy</div>
+
+  <div class="q-block">
+    <div class="q-label">13. The squad should offer more flexible duty structures for members in specific life circumstances (e.g., shift workers, new parents, students).<span class="req">*</span></div>
+    <div class="likert-wrap">
+      <div class="likert-anchors"><span>Strongly disagree</span><span>Strongly agree</span></div>
+      <div class="likert-row" id="q13"></div>
+    </div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">14. The retention committee should:<span class="req">*</span></div>
+    <div class="q-sub">Check all that apply.</div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="q14" value="Send anonymous surveys at least annually"> Send anonymous surveys at least annually</label>
+      <label class="opt"><input type="checkbox" name="q14" value="Contact members individually every 6 months"> Contact members individually every 6 months</label>
+      <label class="opt"><input type="checkbox" name="q14" value="Conduct exit interviews with departing members"> Conduct exit interviews with departing members</label>
+      <label class="opt"><input type="checkbox" name="q14" value="Maintain a standing anonymous feedback channel"> Maintain a standing anonymous feedback channel</label>
+      <label class="opt"><input type="checkbox" name="q14" value="Publish survey results to the full membership"> Publish survey results to the full membership</label>
+      <label class="opt"><input type="checkbox" name="q14" value="Report recruitment and retention statistics annually to membership"> Report recruitment and retention statistics annually to membership</label>
+    </div>
+  </div>
+
+  <div class="section-label">Section 5 of 6</div>
+  <div class="section-title">Demographics</div>
+
+  <div class="q-block">
+    <div class="q-label">15. I have been a member (including probationary time) for:<span class="req">*</span></div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q15" value="Less than 3 years"> Less than 3 years</label>
+      <label class="opt"><input type="radio" name="q15" value="3-6 years"> 3-6 years</label>
+      <label class="opt"><input type="radio" name="q15" value="6-10 years"> 6-10 years</label>
+      <label class="opt"><input type="radio" name="q15" value="10-20 years"> 10-20 years</label>
+      <label class="opt"><input type="radio" name="q15" value="More than 20 years"> More than 20 years</label>
+    </div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">16. My primary riding role is:<span class="req">*</span></div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q16" value="EMS (BLS)"> EMS (BLS)</label>
+      <label class="opt"><input type="radio" name="q16" value="EMS (ALS / Medic)"> EMS (ALS / Medic)</label>
+      <label class="opt"><input type="radio" name="q16" value="Rescue Squad"> Rescue Squad</label>
+      <label class="opt"><input type="radio" name="q16" value="Both EMS and Rescue"> Both EMS and Rescue</label>
+      <label class="opt"><input type="radio" name="q16" value="Administrative / Other"> Administrative / Other</label>
+    </div>
+  </div>
+
+  <div class="section-label">Section 6 of 6</div>
+  <div class="section-title">Open Responses <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--mid)">(all optional)</span></div>
+
+  <div class="q-block">
+    <div class="q-label">17. If you have considered leaving, what are the main reasons?</div>
+    <textarea id="q17" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">18. One thing leadership could do in the next 6 months that would meaningfully improve your experience:</div>
+    <textarea id="q18" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">19. Anything else the retention committee should know:</div>
+    <textarea id="q19" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">20. Email (optional — only if you want the retention committee to follow up with you directly):</div>
+    <input type="email" id="q20" placeholder="your@bccrs.org">
+  </div>
+
+  <div class="submit-bar">
+    <button class="btn" id="submit-btn" onclick="submitSurvey()">Submit Response</button>
+    <div class="submit-note">Anonymous unless you provide your email above.</div>
+  </div>
+  <div class="msg error" id="err-msg"></div>
+  <div class="msg success" id="ok-msg">Your response has been recorded. Thank you for your time.</div>
+
+</div>
+
+<script>
+// -------------------------------------------------------
+// PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BELOW
+// -------------------------------------------------------
+var SCRIPT_URL = "https://script.google.com/a/macros/bccrs.org/s/AKfycbwoLAGAMDkFTWZuUzj4EoaozVNzCQi5ixkD1kgEaOTDJ2U6_fuwKwrwVce8bZA_zlxS/exec";
+// -------------------------------------------------------
+
+var MATRIX_ROWS = [
+  "Interpersonal culture / senior member behavior",
+  "Staffing levels",
+  "Leadership accountability and transparency",
+  "Flexibility for members with life changes",
+  "Advancement and qualification pathways",
+  "Training quality and consistency",
+  "Station facilities",
+  "Multi-station staffing model"
+];
+
+function buildLikert(id) {
+  var el = document.getElementById(id);
+  for (var i = 1; i <= 7; i++) {
+    (function(v){
+      var btn = document.createElement("button");
+      btn.className = "lbtn"; btn.textContent = v; btn.type = "button";
+      btn.onclick = function() {
+        el.querySelectorAll(".lbtn").forEach(function(b){ b.classList.remove("selected"); });
+        btn.classList.add("selected");
+      };
+      el.appendChild(btn);
+    })(i);
+  }
+}
+["q1","q2","q3","q4","q5","q6","q9","q13"].forEach(buildLikert);
+
+var tbody = document.getElementById("q12-body");
+MATRIX_ROWS.forEach(function(row, ri) {
+  var tr = document.createElement("tr");
+  var html = "<td>" + row + "</td>";
+  for (var v = 1; v <= 5; v++) html += '<td><input type="radio" class="mradio" name="q12r' + ri + '" value="' + v + '"></td>';
+  tr.innerHTML = html; tbody.appendChild(tr);
+});
+
+document.querySelectorAll(".opt").forEach(function(item) {
+  item.addEventListener("click", function(e) {
+    if (e.target.tagName === "INPUT") return;
+    var inp = item.querySelector("input");
+    if (inp.type === "radio") {
+      document.querySelectorAll('input[name="' + inp.name + '"]').forEach(function(r){ r.closest(".opt").classList.remove("selected"); });
+      inp.checked = true; item.classList.add("selected");
+    } else { inp.checked = !inp.checked; item.classList.toggle("selected", inp.checked); }
+  });
+  item.querySelector("input").addEventListener("change", function(e) {
+    var inp = e.target;
+    if (inp.type === "radio") {
+      document.querySelectorAll('input[name="' + inp.name + '"]').forEach(function(r){ r.closest(".opt").classList.remove("selected"); });
+      item.classList.add("selected");
+    } else item.classList.toggle("selected", inp.checked);
+  });
+});
+
+document.querySelectorAll('input[name="q11"]').forEach(function(cb) {
+  cb.addEventListener("change", function() {
+    if (document.querySelectorAll('input[name="q11"]:checked').length > 3) {
+      cb.checked = false; cb.closest(".opt").classList.remove("selected");
+      alert("Please select no more than 3 motivators.");
+    }
+  });
+});
+
+function getLikert(id) { var s = document.querySelector("#" + id + " .selected"); return s ? +s.textContent : null; }
+function getRadio(name) { var e = document.querySelector('input[name="' + name + '"]:checked'); return e ? e.value : null; }
+function getChecks(name) { return Array.from(document.querySelectorAll('input[name="' + name + '"]:checked')).map(function(e){ return e.value; }); }
+function getMatrix() {
+  return MATRIX_ROWS.map(function(_, ri) {
+    var e = document.querySelector('input[name="q12r' + ri + '"]:checked'); return e ? +e.value : null;
+  });
+}
+
+function submitSurvey() {
+  var missing = [];
+  if (!getLikert("q1")) missing.push("Q1"); if (!getLikert("q2")) missing.push("Q2");
+  if (!getLikert("q3")) missing.push("Q3"); if (!getLikert("q4")) missing.push("Q4");
+  if (!getLikert("q5")) missing.push("Q5"); if (!getLikert("q6")) missing.push("Q6");
+  if (!getRadio("q7")) missing.push("Q7"); if (!getRadio("q8")) missing.push("Q8");
+  if (!getLikert("q9")) missing.push("Q9");
+  if (getChecks("q10").length === 0) missing.push("Q10");
+  if (getChecks("q11").length === 0) missing.push("Q11");
+  if (getMatrix().some(function(v){ return v === null; })) missing.push("Q12 (all rows)");
+  if (!getLikert("q13")) missing.push("Q13");
+  if (getChecks("q14").length === 0) missing.push("Q14");
+  if (!getRadio("q15")) missing.push("Q15"); if (!getRadio("q16")) missing.push("Q16");
+
+  var errEl = document.getElementById("err-msg");
+  if (missing.length > 0) {
+    errEl.style.display = "block";
+    errEl.textContent = "Please complete required questions: " + missing.join(", ");
+    errEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    return;
+  }
+  errEl.style.display = "none";
+
+  var payload = {
+    ts: new Date().toISOString(),
+    q1: getLikert("q1"), q2: getLikert("q2"), q3: getLikert("q3"),
+    q4: getLikert("q4"), q5: getLikert("q5"), q6: getLikert("q6"),
+    q7: getRadio("q7"), q8: getRadio("q8"), q9: getLikert("q9"),
+    q10: getChecks("q10"), q11: getChecks("q11"), q12: getMatrix(),
+    q13: getLikert("q13"), q14: getChecks("q14"),
+    q15: getRadio("q15"), q16: getRadio("q16"),
+    q17: document.getElementById("q17").value.trim(),
+    q18: document.getElementById("q18").value.trim(),
+    q19: document.getElementById("q19").value.trim(),
+    q20: document.getElementById("q20").value.trim()
+  };
+
+  var btn = document.getElementById("submit-btn");
+  btn.disabled = true; btn.textContent = "Submitting...";
+
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify(payload)
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    if (data.status === "ok") {
+      document.getElementById("ok-msg").style.display = "block";
+      btn.textContent = "Submitted";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      btn.disabled = false; btn.textContent = "Submit Response";
+      errEl.style.display = "block";
+      errEl.textContent = "Submission failed. Please try again.";
+    }
+  })
+  .catch(function() {
+    btn.disabled = false; btn.textContent = "Submit Response";
+    errEl.style.display = "block";
+    errEl.textContent = "Network error. Please check your connection and try again.";
+  });
+}
+</script>
+</body>
+</html>
